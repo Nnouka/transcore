@@ -10,7 +10,10 @@ import java.util.List;
 @Table(name = "apps")
 public class App {
     @Id
-    private String id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String key;
     private String secret;
+    @OneToMany(mappedBy = "app")
+    private List<Business> businesses;
 }

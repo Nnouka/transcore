@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class LoginRequestDTO {
-  @NotBlank(message = "id is required")
-  private String id;
+  @NotBlank(message = "key is required")
+  private String key;
   @NotBlank(message = "secret is required")
   private String secret;
 }

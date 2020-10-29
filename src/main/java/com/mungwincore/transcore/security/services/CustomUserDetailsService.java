@@ -28,17 +28,17 @@ public class CustomUserDetailsService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-    Optional<App> optionalUser = repository.findById(id);
+  public UserDetails loadUserByUsername(String key) throws UsernameNotFoundException {
+    Optional<App> optionalUser = repository.findFirstByKey(key);
     if (optionalUser.isPresent()) {
       App user = optionalUser.get();
       logger.info("Authenticated: {}", user.getId());
       return new org.springframework.security.core.userdetails.User(
-        user.getId(), user.getSecret(), true, true, true, true,
+        user.getKey(), user.getSecret(), true, true, true, true,
               /*getAuthorities(user.getRoles())*/ getGrantedAuthority()
       );
     } else {
-      throw new UsernameNotFoundException("App: " + id + " not found");
+      throw new UsernameNotFoundException("App: " + key + " not found");
     }
   }
 

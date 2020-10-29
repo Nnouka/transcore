@@ -31,7 +31,7 @@ public class JwtTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
         try {
-            Optional<App> optionalUser = appRepository.findById(oAuth2Authentication.getName());
+            Optional<App> optionalUser = appRepository.findFirstByKey(oAuth2Authentication.getName());
             optionalUser.ifPresent(value -> additionalInfo.put("app_id", value.getId()));
         }catch (Exception ex){
             logger.warn(ex.getMessage());
