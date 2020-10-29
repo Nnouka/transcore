@@ -72,8 +72,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
       .secret("{noop}" + authServerProps.getClientSecret())
       .authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT)
       .scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
-      .accessTokenValiditySeconds(authServerProps.getAccessTokenValiditySeconds())
-      .refreshTokenValiditySeconds(authServerProps.getRefreshTokenValiditySeconds());
+      .accessTokenValiditySeconds(-1)
+      .refreshTokenValiditySeconds(-1);
   }
 
   @Override
