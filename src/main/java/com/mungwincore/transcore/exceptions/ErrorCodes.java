@@ -9,6 +9,7 @@ public enum ErrorCodes {
   BAD_CREDENTIALS("Bad user credentials"),
   INVALID_FORMAT("Invalid input format"),
   TOKEN_REFRESH_FAILED("Failed to refresh token"),
+  FAILED_HASH("Failed to hash properly"),
   EMAIL_ALREADY_IN_USE("Sorry email is already taken"),
   PHONE_NUMBER_ALREADY_IN_USE("Sorry phone number is already taken"),
   FILE_NOT_FOUND("The file you specified does not exist or has been moved"),

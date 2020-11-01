@@ -1,16 +1,14 @@
 package com.mungwincore.transcore.domain.dtos.response.app;
 
-import com.mungwincore.transcore.security.dtos.AppTokenDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class AppRegisteredDTO {
+@AllArgsConstructor
+public class AppDTO {
     private String name;
     private String appKey;
-    private AppTokenDTO appToken;
 }

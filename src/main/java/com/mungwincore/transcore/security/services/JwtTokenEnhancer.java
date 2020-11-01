@@ -6,6 +6,7 @@ import com.mungwincore.transcore.domain.repositories.AppRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Qualifier("jwtTokenEnhancer")
 public class JwtTokenEnhancer implements TokenEnhancer {
     private Logger logger = LoggerFactory.getLogger(JwtTokenEnhancer.class);
 
@@ -31,7 +33,8 @@ public class JwtTokenEnhancer implements TokenEnhancer {
     public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
         Map<String, Object> additionalInfo = new HashMap<>();
         try {
-            Optional<App> optionalUser = appRepository.findFirstByKey(oAuth2Authentication.getName());
+            Optional<App> optionalUser = appRepository
+                    .findFirstByKey(oAuth2Authentication.getName());
             optionalUser.ifPresent(value -> additionalInfo.put("app_id", value.getId()));
         }catch (Exception ex){
             logger.warn(ex.getMessage());

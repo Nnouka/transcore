@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS apps (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `key` VARCHAR (256) NOT NULL ,
-    secret VARCHAR (256) NOT NULL
+    app_name VARCHAR(256) NULL ,
+    app_key VARCHAR (256) NOT NULL ,
+    app_secret VARCHAR (256) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS businesses (

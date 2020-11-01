@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     Optional<App> optionalUser = repository.findFirstByKey(key);
     if (optionalUser.isPresent()) {
       App user = optionalUser.get();
-      logger.info("Authenticated: {}", user.getId());
+      logger.info("Authenticated App: {}", user.getId());
       return new org.springframework.security.core.userdetails.User(
         user.getKey(), user.getSecret(), true, true, true, true,
               /*getAuthorities(user.getRoles())*/ getGrantedAuthority()

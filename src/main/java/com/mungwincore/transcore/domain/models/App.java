@@ -12,7 +12,11 @@ public class App {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "app_name")
+    private String name;
+    @Column(name = "app_key")
     private String key;
+    @Column(name = "app_secret")
     private String secret;
     @OneToMany(mappedBy = "app")
     private List<Business> businesses;
