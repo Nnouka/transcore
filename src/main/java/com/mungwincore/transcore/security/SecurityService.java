@@ -5,4 +5,5 @@ import com.mungwincore.transcore.security.dtos.AppTokenDTO;
 
 public interface SecurityService {
     AppTokenDTO getAppToken(LoginRequestDTO dto);
+    AppTokenDTO getAppTokenWithProvided(String p);
 }

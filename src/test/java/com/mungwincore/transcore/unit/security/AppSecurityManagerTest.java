@@ -5,4 +5,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AppSecurityManagerTest {
+
+    public void appToken_return_token_dto () {
+
+    }
 }

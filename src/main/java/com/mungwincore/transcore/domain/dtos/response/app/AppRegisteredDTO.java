@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class AppRegisteredDTO {
     private String name;
     private String appKey;
-    private AppTokenDTO appToken;
+    private AppTokenDTO grantedToken;
+    private String token1;
+    private String token2;
 }

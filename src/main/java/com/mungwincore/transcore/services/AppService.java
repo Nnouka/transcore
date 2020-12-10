@@ -9,5 +9,5 @@ import com.mungwincore.transcore.security.dtos.AppTokenDTO;
 public interface AppService {
     AppRegisteredDTO registerApp(RegisterAppDTO dto);
     AppDTO getAppDetails();
-    AppTokenDTO getAppToken(LoginRequestDTO dto);
+    AppTokenDTO getAppToken(LoginRequestDTO dto, String appToken);
 }

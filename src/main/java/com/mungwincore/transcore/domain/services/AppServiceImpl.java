@@ -13,12 +13,12 @@ import com.mungwincore.transcore.security.dtos.AppTokenDTO;
 import com.mungwincore.transcore.services.AppService;
 import com.mungwincore.transcore.services.AuthFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AppServiceImpl implements AppService {
@@ -50,20 +50,36 @@ public class AppServiceImpl implements AppService {
     @Override
     public AppRegisteredDTO registerApp(RegisterAppDTO dto) {
         String appKey = UUID.randomUUID().toString().replace("-", "");
+        String token1 = null;
+        String token2 = null;
+        try {
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("token", UUID.randomUUID().toString());
+            token1 = Base64.getEncoder().encodeToString(jsonObject1.toString().getBytes());
+            JSONObject jsonObject2 = new JSONObject();
+            jsonObject2.put("token", UUID.randomUUID().toString());
+            token2 = Base64.getEncoder().encodeToString(jsonObject2.toString().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         App app = new App();
         app.setSecret(passwordEncoder.encode(dto.getSecret()));
         app.setName(dto.getName());
         app.setKey(appKey);
+        app.setToken1(token1);
+        app.setToken2(token2);
         appRepository.save(app);
 
-        // get a token
+        // get a jwt token for protected resource endpoints
         AppTokenDTO appTokenDTO = securityService.getAppToken(
                 new LoginRequestDTO(appKey, dto.getSecret())
         );
         return new AppRegisteredDTO(
                 app.getName(),
                 app.getKey(),
-                appTokenDTO
+                appTokenDTO,
+                app.getToken1(),
+                app.getToken2()
         );
     }
 
@@ -83,10 +99,13 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public AppTokenDTO getAppToken(LoginRequestDTO dto) {
-        App app = getAppByKey(dto.getKey(), true);
-        matchSecretsOrReject(app.getSecret(), dto.getSecret());
-        return securityService.getAppToken(dto);
+    public AppTokenDTO getAppToken(LoginRequestDTO dto, String appToken) {
+        if (appToken == null) {
+            App app = getAppByKey(dto.getKey(), true);
+            matchSecretsOrReject(app.getSecret(), dto.getSecret());
+            return securityService.getAppToken(dto);
+        }
+        return securityService.getAppTokenWithProvided(appToken);
     }
 
     private App getAppByKey(String key, boolean auth) {
@@ -104,6 +123,14 @@ public class AppServiceImpl implements AppService {
                     ErrorCodes.RESOURCE_NOT_FOUND.getMessage(), HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.toString()
             );
         }
+    }
+
+    private App getAppByToken(String token, boolean auth) {
+        List<App> appList = appRepository.findByTokens(token);
+        if (appList.size() == 1) {
+            return appList.get(0);
+        }
+        return null;
     }
     private void matchSecretsOrReject(String p0, String p1) {
          if (!passwordEncoder.matches(p1, p0)) {

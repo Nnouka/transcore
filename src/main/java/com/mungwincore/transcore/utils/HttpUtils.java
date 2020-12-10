@@ -5,7 +5,9 @@ import com.mungwincore.transcore.security.utils.SimpleHttpHeader;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 
 public class HttpUtils {
   private static String baseUrl;
@@ -48,4 +50,16 @@ public class HttpUtils {
     HttpUtils.lang = lang;
   }
   public static String getLang(){return (lang == null ||  lang.isEmpty()) ? "en" : lang;}
+  public static String getHeaderValue(HttpServletRequest request, String val) {
+    Enumeration<?> e = request.getHeaderNames();
+    if (e != null) {
+      while (e.hasMoreElements()) {
+        String curr = (String) e.nextElement();
+        if (curr.equals(val)) {
+          return request.getHeader(curr);
+        }
+      }
+    }
+    return null;
+  }
 }

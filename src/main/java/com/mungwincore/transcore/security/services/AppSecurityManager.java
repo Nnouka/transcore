@@ -86,6 +86,35 @@ public class AppSecurityManager implements SecurityService {
         );
     }
 
+    @Override
+    public AppTokenDTO getAppTokenWithProvided(String p) {
+
+        SecurityContext securityContext = securityCon.createSecurityContext2(p);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("grant_type", "password");
+        OAuth2Request auth2Request = new OAuth2Request(
+                params, authServerProps.getClientId(),
+                getGrantedAuthority(),
+                true,
+                null,
+                Collections.singleton(resourceServerProps.getId()),
+                null,
+                null,
+                null
+        );
+
+        OAuth2Authentication authentication = new OAuth2Authentication(
+                auth2Request, securityContext.getAuthentication()
+        );
+
+        OAuth2AccessToken auth2AccessToken = tokenServices.createAccessToken(authentication);
+        return new AppTokenDTO(
+                auth2AccessToken.getValue(),
+                auth2AccessToken.getTokenType()
+        );
+    }
+
     private List<GrantedAuthority> getGrantedAuthority() {
         return Collections.singletonList(new SimpleGrantedAuthority("App"));
     }

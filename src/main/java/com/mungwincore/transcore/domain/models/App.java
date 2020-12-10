@@ -16,6 +16,10 @@ public class App {
     private String name;
     @Column(name = "app_key")
     private String key;
+    @Column(name = "app_token_1")
+    private String token1;
+    @Column(name = "app_token_2")
+    private String token2;
     @Column(name = "app_secret")
     private String secret;
     @OneToMany(mappedBy = "app")
